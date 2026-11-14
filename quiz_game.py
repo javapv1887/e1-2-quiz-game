@@ -1,10 +1,9 @@
-import json
 import random
 from pathlib import Path
-from tempfile import NamedTemporaryFile
 
 from default_quizzes import make_default_quizzes
 from quiz import Quiz
+from storage import InvalidStateError, backup_path, read_state, write_state
 
 
 STATE_PATH = Path(__file__).resolve().parent / "state.json"
@@ -44,6 +43,7 @@ class QuizGame:
         self.quizzes = make_default_quizzes()
         self.best_score = None
         self.needs_save = False
+        self.can_save = True
 
     def run(self):
         try:
@@ -65,6 +65,7 @@ class QuizGame:
             print("\n입력이 중단되었습니다.")
         finally:
             if self.needs_save:
+                print("저장되지 않은 변경사항을 저장합니다.")
                 self.save_state()
         print("게임을 종료합니다.")
 
@@ -143,57 +144,40 @@ class QuizGame:
 
     def load_state(self):
         try:
-            with self.state_path.open(encoding="utf-8") as file:
-                state = json.load(file)
-            if not isinstance(state, dict) or not isinstance(state.get("quizzes"), list):
-                raise ValueError("퀴즈 목록을 읽을 수 없습니다.")
-
-            quizzes = [Quiz.from_record(item) for item in state["quizzes"]]
-            best_score = state["best_score"]
-            if best_score is not None:
-                if not isinstance(best_score, dict):
-                    raise ValueError("최고 점수 형식이 올바르지 않습니다.")
-                correct, total = best_score["correct"], best_score["total"]
-                if (
-                    type(correct) is not int
-                    or type(total) is not int
-                    or not 0 <= correct <= total
-                    or total == 0
-                ):
-                    raise ValueError("최고 점수의 문제 수가 올바르지 않습니다.")
+            self.quizzes, self.best_score = read_state(self.state_path)
         except FileNotFoundError:
-            self.needs_save = True
-            return
-        except (ValueError, KeyError, RecursionError):
-            print("state.json이 손상되어 기본 퀴즈로 복구합니다.")
-            self.needs_save = True
-            return
+            self.load_backup()
+        except InvalidStateError:
+            print("state.json이 손상되었습니다.")
+            self.load_backup()
         except OSError as error:
-            print(f"state.json을 읽을 수 없어 기본 퀴즈를 사용합니다. ({error.strerror})")
-            return
+            self.disable_saving(self.state_path, error)
 
-        self.quizzes = quizzes
-        self.best_score = best_score
+    def load_backup(self):
+        path = backup_path(self.state_path)
+        try:
+            self.quizzes, self.best_score = read_state(path)
+        except FileNotFoundError:
+            print("기본 퀴즈로 시작합니다.")
+        except InvalidStateError:
+            print("백업도 손상되어 기본 퀴즈로 시작합니다.")
+        except OSError as error:
+            self.disable_saving(path, error)
+            return
+        else:
+            print(f"{path.name}에서 퀴즈와 최고 점수를 복구했습니다.")
+        self.needs_save = True
+
+    def disable_saving(self, path, error):
+        self.can_save = False
+        print(f"{path.name}을 읽을 수 없어 이번 실행에서는 기본 퀴즈를 사용합니다. ({error})")
 
     def save_state(self):
-        state = {
-            "quizzes": [quiz.to_record() for quiz in self.quizzes],
-            "best_score": self.best_score,
-        }
-        temporary_path = None
+        if not self.can_save:
+            print("파일을 읽을 수 없어 저장을 건너뜁니다. 접근 권한을 확인하고 다시 실행하세요.")
+            return False
         try:
-            try:
-                with NamedTemporaryFile(
-                    mode="w", encoding="utf-8", dir=self.state_path.parent, delete=False
-                ) as file:
-                    temporary_path = Path(file.name)
-                    json.dump(state, file, ensure_ascii=False, indent=2)
-                    file.write("\n")
-                # 쓰기를 마친 파일로 교체해 저장 도중 기존 JSON이 잘리는 일을 막는다.
-                temporary_path.replace(self.state_path)
-            finally:
-                if temporary_path is not None:
-                    temporary_path.unlink(missing_ok=True)
+            write_state(self.state_path, self.quizzes, self.best_score)
         except (OSError, UnicodeError) as error:
             print(f"state.json을 저장할 수 없습니다. ({error})")
             return False
