@@ -4,7 +4,7 @@
 
 터미널에서 파이썬 기초 문제를 풀고 직접 문제를 등록하는 콘솔 게임입니다. 등록한 문제와 최고 점수는 종료 후에도 유지됩니다.
 
-[실행 화면과 로그](#제출-증빙) · [저장 및 복구](#저장-데이터) · [대규모 데이터 분석](docs/performance.md) · [커밋 작성 방법](CONTRIBUTING.md)
+[실행 화면과 로그](#제출-증빙) · [저장 및 복구](#저장-데이터) · [대규모 데이터 분석](docs/performance.md) · [커밋 단위 규정과 메시지 템플릿](CONTRIBUTING.md)
 
 ## 퀴즈 주제와 선정 이유
 
@@ -114,6 +114,7 @@ python3 main.py
 | 개발 환경 | [Python·Git 설정](docs/screenshots/environment.png) |
 | 메뉴와 게임 실행 | [메뉴](docs/screenshots/menu.png) · [추가](docs/screenshots/add_quiz.png) · [목록](docs/screenshots/list_quizzes.png) · [풀이](docs/screenshots/play.png) · [재실행 후 점수](docs/screenshots/score.png) · [전체 콘솔 로그](docs/logs/game.txt) |
 | 커밋과 병합 | [Git 그래프 PNG](docs/screenshots/git_log.png) · [커밋 해시와 병합 로그](docs/logs/git_graph.txt) |
+| 평가 항목 #12 · 커밋 규정 | [커밋 단위 규정과 메시지 템플릿 (CONTRIBUTING.md)](CONTRIBUTING.md) |
 | 복제·푸시·풀 | [clone PNG](docs/screenshots/git_clone.png) · [push·pull PNG](docs/screenshots/git_pull.png) · [clone 로그](docs/logs/git_clone.txt) · [push·pull 로그](docs/logs/git_pull.txt) |
 | 자동 복구 | [저장본 손상과 정상 백업 복구 로그](docs/logs/recovery.txt) |
 
