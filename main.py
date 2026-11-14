@@ -68,6 +68,16 @@ def add_quiz(quizzes):
     print("퀴즈가 추가되었습니다.")
 
 
+def show_quizzes(quizzes):
+    if not quizzes:
+        print("등록된 퀴즈가 없습니다.")
+        return
+
+    print(f"\n등록된 퀴즈 목록 (총 {len(quizzes)}개)")
+    for number, quiz in enumerate(quizzes, start=1):
+        print(f"{number}. {quiz.question}")
+
+
 def run_menu():
     quizzes = make_default_quizzes()
     while True:
@@ -80,6 +90,8 @@ def run_menu():
             play_quizzes(quizzes)
         elif choice == 2:
             add_quiz(quizzes)
+        elif choice == 3:
+            show_quizzes(quizzes)
         else:
             print("이 메뉴는 준비 중입니다.")
 
