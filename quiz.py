@@ -22,3 +22,12 @@ class Quiz:
 
     def is_correct(self, choice):
         return choice == self.answer
+
+    def to_record(self):
+        return {"question": self.question, "choices": self.choices, "answer": self.answer}
+
+    @classmethod
+    def from_record(cls, record):
+        if not isinstance(record, dict):
+            raise ValueError("퀴즈 항목은 객체여야 합니다.")
+        return cls(record["question"], record["choices"], record["answer"])
