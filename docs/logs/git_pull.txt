@@ -1,0 +1,27 @@
+복제본에서 커밋 및 푸시
+$ git add CONTRIBUTING.md
+$ git commit -m "Docs: 커밋 단위와 메시지 작성 방법 추가"
+[main 022677f] Docs: 커밋 단위와 메시지 작성 방법 추가
+ 1 file changed, 17 insertions(+)
+ create mode 100644 CONTRIBUTING.md
+$ git push origin main
+To https://github.com/javapv1887/e1-2-quiz-game.git
+   c0b553e..022677f  main -> main
+
+원래 작업 폴더에서 pull
+
+$ git pull --ff-only origin main
+From https://github.com/javapv1887/e1-2-quiz-game
+ * branch            main       -> FETCH_HEAD
+   c0b553e..022677f  main       -> origin/main
+Updating c0b553e..022677f
+Fast-forward
+ CONTRIBUTING.md | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+ create mode 100644 CONTRIBUTING.md
+
+$ git log -1 --oneline
+022677f Docs: 커밋 단위와 메시지 작성 방법 추가
+
+$ git status --short --branch
+## main...origin/main

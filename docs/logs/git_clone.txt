@@ -1,0 +1,14 @@
+$ git clone https://github.com/javapv1887/e1-2-quiz-game.git e1-2-quiz-game-clone
+Cloning into 'e1-2-quiz-game-clone'...
+remote: Enumerating objects: 61, done.
+remote: Counting objects: 100% (61/61)
+remote: Counting objects: 100% (61/61), done.
+remote: Compressing objects: 100% (37/37)
+remote: Compressing objects: 100% (37/37), done.
+remote: Total 61 (delta 26), reused 57 (delta 22), pack-reused 0 (from 0)
+Receiving objects: 100% (61/61)
+Receiving objects: 100% (61/61), 749.17 KiB | 10.26 MiB/s, done.
+Resolving deltas: 100% (26/26)
+Resolving deltas: 100% (26/26), done.
+$ git -C e1-2-quiz-game-clone rev-parse --short HEAD
+c0b553e
