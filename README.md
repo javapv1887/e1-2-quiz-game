@@ -20,6 +20,8 @@ python3 main.py
 
 이미 내려받은 경우 프로젝트 폴더에서 `python3 main.py`만 실행하면 됩니다.
 
+복제한 저장소에서도 같은 명령으로 게임을 실행할 수 있습니다.
+
 ## 기능 목록
 
 | 메뉴 | 동작 |
@@ -41,6 +43,7 @@ python3 main.py
 | `quiz_game.py` | 콘솔 메뉴, 입력 처리, 게임 진행, 점수 관리, 파일 저장과 복구 |
 | `default_quizzes.py` | 기본 퀴즈 5개 |
 | `state.json` | 실행 시 생성되는 개인 퀴즈와 최고 점수 데이터 |
+| `docs/screenshots/` | 개발 환경, 실행 결과, Git 커밋 그래프 이미지 |
 | `.gitignore` | 개인 저장 데이터와 파이썬 캐시를 Git에서 제외 |
 
 ## 저장 데이터
@@ -52,4 +55,12 @@ python3 main.py
 | `quizzes` | 문제 객체의 배열. 각 객체는 `question`(문자열), `choices`(문자열 4개의 배열), `answer`(1–4 사이의 정수)를 가집니다. |
 | `best_score` | 게임을 마친 기록이 없으면 `null`. 기록이 있으면 `correct`(정답 수)와 `total`(전체 문제 수)을 담은 객체입니다. |
 
-복제한 저장소에서도 같은 명령으로 게임을 실행할 수 있습니다.
+## 제출용 이미지
+
+실제 명령과 게임의 콘솔 출력을 PNG로 정리했습니다. 퀴즈 풀이 이미지는 첫 문제와 최종 결과를 보여 줍니다. 점수 확인 이미지는 게임을 다시 실행해 저장된 점수를 확인한 화면입니다.
+
+- [개발 환경](docs/screenshots/environment.png)
+- [메뉴](docs/screenshots/menu.png) · [퀴즈 추가](docs/screenshots/add_quiz.png) · [퀴즈 목록](docs/screenshots/list_quizzes.png) · [퀴즈 풀이](docs/screenshots/play.png) · [점수 확인](docs/screenshots/score.png)
+- [복제·푸시·풀 실습 직후의 Git 커밋 그래프](docs/screenshots/git_log.png)
+
+퀴즈 풀이 기능은 `codex/play-quiz` 브랜치에서 개발한 뒤 `main`에 병합했습니다. 이후 GitHub 저장소를 별도 디렉터리에 복제하고 그곳에서 README를 수정해 푸시한 뒤, 원래 작업 디렉터리에서 `git pull --ff-only origin main`을 실행해 변경을 확인했습니다.
