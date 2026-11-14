@@ -55,7 +55,8 @@ def play_quizzes(quizzes):
         else:
             print(f"오답입니다. 정답은 {quiz.answer}번입니다.")
 
-    print(f"\n결과: {total}문제 중 {correct}문제 정답")
+    points = correct * 100 // total
+    print(f"\n결과: {total}문제 중 {correct}문제 정답 ({points}점)")
     return correct, total
 
 
@@ -78,8 +79,32 @@ def show_quizzes(quizzes):
         print(f"{number}. {quiz.question}")
 
 
+def update_best_score(best_score, result):
+    if result is None:
+        return best_score
+
+    correct, total = result
+    # 두 정답률을 교차 곱으로 비교해 정수 표시 때의 반올림 오차를 피한다.
+    if best_score is None or correct * best_score["total"] > best_score["correct"] * total:
+        print("새 최고 점수입니다!")
+        return {"correct": correct, "total": total}
+    return best_score
+
+
+def show_best_score(best_score):
+    if best_score is None:
+        print("아직 퀴즈를 마친 기록이 없습니다.")
+        return
+
+    correct = best_score["correct"]
+    total = best_score["total"]
+    points = correct * 100 // total
+    print(f"최고 점수: {points}점 ({total}문제 중 {correct}문제 정답)")
+
+
 def run_menu():
     quizzes = make_default_quizzes()
+    best_score = None
     while True:
         show_menu()
         choice = read_number("선택: ", 1, 5)
@@ -87,13 +112,14 @@ def run_menu():
             print("게임을 종료합니다.")
             return
         if choice == 1:
-            play_quizzes(quizzes)
+            result = play_quizzes(quizzes)
+            best_score = update_best_score(best_score, result)
         elif choice == 2:
             add_quiz(quizzes)
         elif choice == 3:
             show_quizzes(quizzes)
-        else:
-            print("이 메뉴는 준비 중입니다.")
+        elif choice == 4:
+            show_best_score(best_score)
 
 
 if __name__ == "__main__":
